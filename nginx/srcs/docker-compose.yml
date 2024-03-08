@@ -1,0 +1,32 @@
+version: '3.5'
+
+networks:
+  inception:
+    name: inception
+
+volumes:
+  site:
+    name: site
+    driver: local
+    driver_opts:
+      type: none
+      o: 'bind'
+      device: '../../www/html/'
+
+services:
+
+  nginx:
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    container_name: nginx
+    restart: always
+    networks:
+      - inception
+    volumes:
+      - site:/var/www/html/
+
